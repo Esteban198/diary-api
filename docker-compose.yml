@@ -1,0 +1,9 @@
+services:
+  diary-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5067:5067"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
