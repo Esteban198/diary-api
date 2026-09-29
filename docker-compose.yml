@@ -1,4 +1,15 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=diary
+      - POSTGRES_PASSWORD=diary
+      - POSTGRES_DB=diary
+    ports:
+      - "5432:5432"
+    volumes:
+      - diary-postgres-data:/var/lib/postgresql/data
+
   diary-api:
     build:
       context: .
@@ -7,3 +18,9 @@ services:
       - "5067:5067"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Postgres=Host=postgres;Port=5432;Database=diary;Username=diary;Password=diary
+    depends_on:
+      - postgres
+
+volumes:
+  diary-postgres-data:

@@ -1,12 +1,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-COPY DiaryApi.slnx .
-COPY src/DiaryApi/DiaryApi.csproj src/DiaryApi/
-RUN dotnet restore DiaryApi.slnx
+COPY global.json Directory.Build.props Directory.Packages.props ./
+COPY src/Diary.Api/Diary.Api.csproj src/Diary.Api/
+RUN dotnet restore src/Diary.Api/Diary.Api.csproj
 
-COPY src/DiaryApi/. src/DiaryApi/
-RUN dotnet publish src/DiaryApi/DiaryApi.csproj -c Release -o /app/publish --no-restore
+COPY src/Diary.Api/. src/Diary.Api/
+RUN dotnet publish src/Diary.Api/Diary.Api.csproj -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
@@ -17,4 +17,4 @@ USER $APP_UID
 ENV ASPNETCORE_HTTP_PORTS=5067
 EXPOSE 5067
 
-ENTRYPOINT ["dotnet", "DiaryApi.dll"]
+ENTRYPOINT ["dotnet", "Diary.Api.dll"]
